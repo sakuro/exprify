@@ -1,0 +1,31 @@
+(* EBNF Grammar for Exprify Search Expression Parser *)
+
+(* Top-level expression *)
+Expression = Term, { "OR", Term } ;
+
+(* Term: a sequence of factors implicitly combined with AND *)
+Term = Factor, { Factor } ;
+
+(* Factor: a basic search unit or a negated factor *)
+Factor = [ "-" ], ( Keyword | ExactPhrase | NamedArgument | Group ) ;
+
+(* Keyword: a simple search term *)
+Keyword = Word ;
+
+(* Exact phrase: text enclosed in double quotes *)
+ExactPhrase = '"', { Character - '"' }, '"' ;
+
+(* Named argument: a field-value pair *)
+NamedArgument = Word, ":", ( Word | ExactPhrase ) ;
+
+(* Group: an expression enclosed in parentheses *)
+Group = "(", Expression, ")" ;
+
+(* Word: a sequence of non-special characters *)
+Word = Character, { Character - SpecialChar } ;
+
+(* Character: any Unicode character *)
+Character = ? any Unicode character ? ;
+
+(* Special characters that have special meaning in the grammar *)
+SpecialChar = " " | "\t" | "\n" | "\r" | "(" | ")" | '"' ;
