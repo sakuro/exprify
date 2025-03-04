@@ -44,6 +44,7 @@ Metrics/CyclomaticComplexity:
 # Configuration parameters: CountComments, Max, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
   Exclude:
+    - 'lib/exprify/ast.rb'
     - 'lib/exprify/parser.rb'
 
 # Configuration parameters: AllowedMethods, AllowedPatterns, Max.
@@ -51,9 +52,15 @@ Metrics/PerceivedComplexity:
   Exclude:
     - 'lib/exprify/parser.rb'
 
+# Configuration parameters: Max, CountAsOne.
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/exprify/ast_spec.rb'
+
 # Configuration parameters: Max.
 RSpec/MultipleExpectations:
   Exclude:
+    - 'spec/exprify/ast_spec.rb'
     - 'spec/exprify/parser_spec.rb'
 
 # Configuration parameters: IgnoreModules.
