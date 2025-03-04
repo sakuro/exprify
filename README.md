@@ -1,28 +1,62 @@
 # Exprify
 
-TODO: Delete this and the text below, and describe your gem
+:construction: **This project is under active development and not ready for production use.** :construction:
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/exprify`. To experiment with that code, run `bin/console` for an interactive prompt.
+Exprify is a library for parsing search expressions into abstract syntax trees (AST) that can be transformed into various search backends.
+
+## Features
+
+- **Flexible Syntax Support**:
+  - Space-separated AND keywords (default)
+  - OR operators (`word1 OR word2`)
+  - Negation (`-word`)
+  - Grouping with parentheses (`(a OR b) c`)
+  - Exact phrase matching with quotes (`"exact phrase"`)
+  - Named arguments (`since:2024-01-01`)
+
+- **Error Handling Modes**:
+  - Strict mode: Reports syntax errors
+  - Lenient mode: Preserves as much of the original input as possible
+
+- **Extensible Backend Support**:
+  - Transform AST into various search backends
+  - Dependency injection support for custom backends
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+gem 'exprify'
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+And then execute:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+$ bundle install
+```
+
+Or install it yourself as:
+
+```bash
+$ gem install exprify
 ```
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+# Basic usage
+parser = Exprify::Parser.new
+ast = parser.parse("ruby gem -deprecated")
+
+# Using with SQL backend
+sql_generator = Exprify::Backends::SQL.new
+where_clause = sql_generator.generate(ast)
+
+# Error handling modes
+parser = Exprify::Parser.new(mode: :strict)  # raises error on invalid syntax
+parser = Exprify::Parser.new(mode: :lenient) # tries to preserve invalid parts
+```
 
 ## Development
 
@@ -32,7 +66,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/exprify.
+Bug reports and pull requests are welcome on GitHub at https://github.com/sakuro/exprify.
 
 ## License
 
