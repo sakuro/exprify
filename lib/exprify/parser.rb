@@ -3,16 +3,7 @@
 module Exprify
   # Parser for search expressions that converts input strings into AST nodes
   class Parser
-    class Token
-      attr_reader :type
-      attr_reader :value
-
-      def initialize(type, value)
-        @type = type
-        @value = value
-      end
-    end
-
+    Token = Data.define(:type, :value)
     private_constant :Token
 
     # Regular expression for special characters in search expressions
@@ -46,24 +37,24 @@ module Exprify
         when " ", "\t", "\n", "\r"
           pos += 1
         when "("
-          tokens << Token.new(:lparen, char)
+          tokens << Token.new(type: :lparen, value: char)
           pos += 1
         when ")"
-          tokens << Token.new(:rparen, char)
+          tokens << Token.new(type: :rparen, value: char)
           pos += 1
         when "-"
           if pos.zero? || input[pos - 1] =~ /\s/
-            tokens << Token.new(:not, char)
+            tokens << Token.new(type: :not, value: char)
             pos += 1
           else
             # ハイフンを含む単語として処理
             word, end_pos = scan_to_boundary(input, pos)
-            tokens << Token.new(:keyword, word)
+            tokens << Token.new(type: :keyword, value: word)
             pos = end_pos
           end
         when '"'
           phrase, end_pos = scan_phrase(input, pos + 1)
-          tokens << Token.new(:phrase, phrase)
+          tokens << Token.new(type: :phrase, value: phrase)
           pos = end_pos
         else
           word, end_pos = scan_to_boundary(input, pos)
@@ -73,7 +64,7 @@ module Exprify
         end
       end
 
-      tokens << Token.new(:eof, nil)
+      tokens << Token.new(type: :eof, value: nil)
       tokens
     end
 
@@ -107,8 +98,8 @@ module Exprify
     end
 
     private def process_word(word)
-      return Token.new(:operator, word) if OPERATORS.include?(word)
-      return Token.new(:keyword, word) unless word.include?(":")
+      return Token.new(type: :operator, value: word) if OPERATORS.include?(word)
+      return Token.new(type: :keyword, value: word) unless word.include?(":")
 
       # 最初のコロンの位置を見つける
       colon_pos = word.index(":")
@@ -116,15 +107,15 @@ module Exprify
       value = word[colon_pos + 1..]
 
       # 名前が空の場合はキーワードとして扱う
-      return Token.new(:keyword, word) if name.empty?
+      return Token.new(type: :keyword, value: word) if name.empty?
 
       # 値が引用符で囲まれている場合は引用符を除去
       value = value[1..-2] if value.start_with?('"') && value.end_with?('"') && value.length >= 2
 
       # 値が空の場合はキーワードとして扱う
-      return Token.new(:keyword, word) if value.empty?
+      return Token.new(type: :keyword, value: word) if value.empty?
 
-      Token.new(:named_arg, [name, value])
+      Token.new(type: :named_arg, value: [name, value])
     end
 
     private def parse_expression
