@@ -12,20 +12,6 @@ Bundler/GemComment:
   Exclude:
     - 'Gemfile'
 
-# Configuration parameters: Severity, Include.
-# Include: **/*.gemspec
-Gemspec/RequiredRubyVersion:
-  Exclude:
-    - 'exprify.gemspec'
-
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
-# SupportedStyles: space, no_space
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideBlockBraces:
-  Exclude:
-    - 'exprify.gemspec'
-
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes, Max.
 Metrics/AbcSize:
   Exclude:
@@ -62,8 +48,3 @@ RSpec/MultipleExpectations:
   Exclude:
     - 'spec/exprify/ast_spec.rb'
     - 'spec/exprify/parser_spec.rb'
-
-# Configuration parameters: IgnoreModules.
-Style/ConstantVisibility:
-  Exclude:
-    - 'lib/exprify/version.rb'
