@@ -13,10 +13,7 @@ CLEAN.include("doc")
 
 RSpec::Core::RakeTask.new(:spec)
 RuboCop::RakeTask.new
-YARD::Rake::YardocTask.new do |t|
-  t.files = ["lib/**/*.rb"]
-  t.options = ["--markup", "markdown"]
-end
+YARD::Rake::YardocTask.new
 
 Dir.glob("lib/tasks/*.rake").each { load it }
 
