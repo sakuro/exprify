@@ -3,7 +3,7 @@
 require_relative "mail_sql_transformer"
 
 RSpec.describe MailSqlTransformer do
-  subject(:transformer) { described_class.new }
+  subject(:transformer) { MailSqlTransformer.new }
 
   let(:parser) { Exprify::Parser.new }
 

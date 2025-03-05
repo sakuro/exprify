@@ -5,7 +5,7 @@ require_relative "../../../lib/exprify/transformers/base"
 RSpec.describe Exprify::AST::AndNode do
   let(:first_keyword) { Exprify::AST::KeywordNode.new("test1") }
   let(:second_keyword) { Exprify::AST::KeywordNode.new("test2") }
-  let(:node) { described_class.new(first_keyword, second_keyword) }
+  let(:node) { Exprify::AST::AndNode.new(first_keyword, second_keyword) }
 
   describe "#accept" do
     it "calls transform_and on transformer" do

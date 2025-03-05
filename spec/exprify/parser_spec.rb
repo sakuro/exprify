@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Exprify::Parser do
-  subject(:parser) { described_class.new }
+  subject(:parser) { Exprify::Parser.new }
 
   describe "#parse" do
     context "with single keyword" do

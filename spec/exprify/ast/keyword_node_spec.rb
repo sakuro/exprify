@@ -3,7 +3,7 @@
 require_relative "../../../lib/exprify/transformers/base"
 
 RSpec.describe Exprify::AST::KeywordNode do
-  let(:node) { described_class.new("test") }
+  let(:node) { Exprify::AST::KeywordNode.new("test") }
 
   describe "#accept" do
     it "calls transform_keyword on transformer" do

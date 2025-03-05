@@ -4,7 +4,7 @@ require_relative "../../../lib/exprify/transformers/base"
 
 RSpec.describe Exprify::AST::NotNode do
   let(:keyword) { Exprify::AST::KeywordNode.new("test") }
-  let(:node) { described_class.new(keyword) }
+  let(:node) { Exprify::AST::NotNode.new(keyword) }
 
   describe "#accept" do
     it "calls transform_not on transformer" do

@@ -3,7 +3,7 @@
 require_relative "../../../lib/exprify/transformers/base"
 
 RSpec.describe Exprify::AST::NamedArgumentNode do
-  let(:node) { described_class.new("name", "value") }
+  let(:node) { Exprify::AST::NamedArgumentNode.new("name", "value") }
 
   describe "#accept" do
     it "calls transform_named_argument on transformer" do

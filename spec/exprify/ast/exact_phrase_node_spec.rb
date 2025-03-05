@@ -3,7 +3,7 @@
 require_relative "../../../lib/exprify/transformers/base"
 
 RSpec.describe Exprify::AST::ExactPhraseNode do
-  let(:node) { described_class.new("test phrase") }
+  let(:node) { Exprify::AST::ExactPhraseNode.new("test phrase") }
 
   describe "#accept" do
     it "calls transform_exact_phrase on transformer" do

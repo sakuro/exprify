@@ -4,7 +4,7 @@ require_relative "../../../lib/exprify/transformers/base"
 
 RSpec.describe Exprify::AST::GroupNode do
   let(:keyword) { Exprify::AST::KeywordNode.new("test") }
-  let(:node) { described_class.new(keyword) }
+  let(:node) { Exprify::AST::GroupNode.new(keyword) }
 
   describe "#accept" do
     it "calls transform_group on transformer" do
