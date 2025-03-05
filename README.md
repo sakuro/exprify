@@ -2,25 +2,29 @@
 
 :construction: **This project is under active development and not ready for production use.** :construction:
 
-Exprify is a library for parsing search expressions into abstract syntax trees (AST) that can be transformed into various search backends.
+Exprify is a library for parsing search expressions into abstract syntax trees (AST). The AST can be transformed into various formats by implementing a transformer class.
+
+See [TODO.md](TODO.md) for planned features and improvements.
 
 ## Features
 
-- **Flexible syntax support**:
-  - Space-separated AND keywords (default)
-  - OR operators (`word1 OR word2`)
-  - Negation (`-word`)
-  - Grouping with parentheses (`(a OR b) c`)
-  - Exact phrase matching with quotes (`"exact phrase"`)
-  - Named arguments (`since:2024-01-01`)
+### Syntax support
 
-- **Error handling modes**:
-  - Strict mode: Reports syntax errors
-  - Lenient mode: Preserves as much of the original input as possible
+- **Basic Operators**
+  - Space-separated AND keywords (default): `ruby gem`
+  - OR operator: `ruby OR gem`
+  - Negation: `-deprecated`
+  - Grouping: `(ruby OR gem) -deprecated`
+  - Exact phrase matching: `"exact phrase"`
+  - Named arguments: `since:2024-01-01`
 
-- **Extensible backend support**:
-  - Transform AST into various search backends
-  - Dependency injection support for custom backends
+### AST transformation
+
+To use the AST, implement a transformer class by extending `Exprify::Transformers::Base`. The transformer visits each node in the AST and converts it to your desired format.
+
+An example implementation is included:
+
+- `MailSqlTransformer` (`lib/exprify/transformers/mail_sql_transformer.rb`) - Generates SQL conditions for filtering RFC822 messages
 
 ## Installation
 
@@ -44,19 +48,84 @@ $ gem install exprify
 
 ## Usage
 
+### Basic parsing
+
 ```ruby
-# Basic usage
+require 'exprify'
+
+# Create a parser
 parser = Exprify::Parser.new
+
+# Parse a simple expression
 ast = parser.parse("ruby gem -deprecated")
 
-# Using with SQL backend
-sql_generator = Exprify::Backends::SQL.new
-where_clause = sql_generator.generate(ast)
-
-# Error handling modes
-parser = Exprify::Parser.new(mode: :strict)  # raises error on invalid syntax
-parser = Exprify::Parser.new(mode: :lenient) # tries to preserve invalid parts
+# Parse with grouping and operators
+ast = parser.parse('(ruby OR gem) tag:"web framework"')
 ```
+
+### Implementing a transformer
+
+Create your transformer by implementing the visitor methods for each node type:
+
+```ruby
+class MyTransformer < Exprify::Transformers::Base
+  def visit_keyword(node)
+    # Transform keyword node
+  end
+
+  def visit_and(node)
+    # Transform AND node
+  end
+
+  def visit_or(node)
+    # Transform OR node
+  end
+
+  def visit_not(node)
+    # Transform NOT node
+  end
+
+  def visit_group(node)
+    # Transform group node
+  end
+
+  def visit_exact_phrase(node)
+    # Transform exact phrase node
+  end
+
+  def visit_named_argument(node)
+    # Transform named argument node
+  end
+end
+
+# Using your transformer
+transformer = MyTransformer.new
+result = transformer.transform(ast)
+```
+
+See the included transformer for an implementation example:
+- `MailSqlTransformer` (`lib/exprify/transformers/mail_sql_transformer.rb`) - SQL condition generation for RFC822 message filtering
+
+## Design
+
+### AST structure
+
+The parser generates an AST with the following node types:
+
+- `KeywordNode`: Simple search terms
+- `AndNode`: Space-separated terms or explicit AND
+- `OrNode`: Terms joined with OR
+- `NotNode`: Negated terms
+- `GroupNode`: Parenthesized expressions
+- `ExactPhraseNode`: Quoted phrases
+- `NamedArgumentNode`: Key-value pairs
+
+### Transformation process
+
+1. Input string is tokenized
+2. Tokens are parsed into an AST
+3. AST is visited by a transformer
+4. Transformer generates the desired output format
 
 ## Development
 
