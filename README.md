@@ -6,7 +6,7 @@ Exprify is a library for parsing search expressions into abstract syntax trees (
 
 ## Features
 
-- **Flexible Syntax Support**:
+- **Flexible syntax support**:
   - Space-separated AND keywords (default)
   - OR operators (`word1 OR word2`)
   - Negation (`-word`)
@@ -14,11 +14,11 @@ Exprify is a library for parsing search expressions into abstract syntax trees (
   - Exact phrase matching with quotes (`"exact phrase"`)
   - Named arguments (`since:2024-01-01`)
 
-- **Error Handling Modes**:
+- **Error handling modes**:
   - Strict mode: Reports syntax errors
   - Lenient mode: Preserves as much of the original input as possible
 
-- **Extensible Backend Support**:
+- **Extensible backend support**:
   - Transform AST into various search backends
   - Dependency injection support for custom backends
 
