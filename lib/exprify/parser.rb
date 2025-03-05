@@ -1,31 +1,38 @@
 # frozen_string_literal: true
 
 module Exprify
-  # Parser for search expressions that converts input strings into AST nodes
+  # Parser for search expressions that converts input strings into AST nodes.
+  #
+  # This class is responsible for tokenizing input strings and building
+  # an Abstract Syntax Tree (AST) that represents the search expression.
   class Parser
     Token = Data.define(:type, :value)
     private_constant :Token
 
-    # Regular expression for special characters in search expressions
+    # Regular expression for special characters in search expressions.
+    #
+    # Used to identify word boundaries and special tokens in the input.
     SPECIAL_CHARS = /[\s()"]/
     private_constant :SPECIAL_CHARS
 
-    # List of supported operators
+    # List of supported operators.
+    #
+    # Currently only supports the OR operator for combining expressions.
     OPERATORS = %w[OR].freeze
     private_constant :OPERATORS
 
-    # Initialize a new parser
+    # Initialize a new parser.
     #
-    # @return [Parser] A new parser instance
+    # @return [Parser] A new parser instance.
     def initialize
       # noop
     end
 
-    # Parse the input string into an AST
+    # Parse the input string into an AST.
     #
-    # @param input [String] The input search expression
-    # @return [AST::Node] The root node of the AST
-    # @raise [Error] If the input is invalid
+    # @param input [String] The input search expression.
+    # @return [AST::Node] The root node of the AST.
+    # @raise [Error] If the input is invalid.
     def parse(input)
       raise Error, "Empty input" if input.nil? || input.strip.empty?
 
@@ -34,10 +41,10 @@ module Exprify
       parse_expression
     end
 
-    # Convert input string into a sequence of tokens
+    # Convert input string into a sequence of tokens.
     #
-    # @param input [String] The input search expression
-    # @return [Array<Token>] The sequence of tokens
+    # @param input [String] The input search expression.
+    # @return [Array<Token>] The sequence of tokens.
     private def tokenize(input)
       tokens = []
       pos = 0

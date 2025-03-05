@@ -8,11 +8,11 @@ RSpec.describe Exprify::AST::OrNode do
   let(:node) { described_class.new(first_keyword, second_keyword) }
 
   describe "#accept" do
-    it "calls visit_or on visitor" do
-      visitor = instance_double(Exprify::Transformers::Base)
-      allow(visitor).to receive(:visit_or).with(node)
-      node.accept(visitor)
-      expect(visitor).to have_received(:visit_or).with(node)
+    it "calls transform_or on transformer" do
+      transformer = instance_double(Exprify::Transformers::Base)
+      allow(transformer).to receive(:transform_or).with(node)
+      node.accept(transformer)
+      expect(transformer).to have_received(:transform_or).with(node)
     end
   end
 

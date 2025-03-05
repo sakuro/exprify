@@ -8,11 +8,11 @@ RSpec.describe Exprify::AST::AndNode do
   let(:node) { described_class.new(first_keyword, second_keyword) }
 
   describe "#accept" do
-    it "calls visit_and on visitor" do
-      visitor = instance_double(Exprify::Transformers::Base)
-      allow(visitor).to receive(:visit_and).with(node)
-      node.accept(visitor)
-      expect(visitor).to have_received(:visit_and).with(node)
+    it "calls transform_and on transformer" do
+      transformer = instance_double(Exprify::Transformers::Base)
+      allow(transformer).to receive(:transform_and).with(node)
+      node.accept(transformer)
+      expect(transformer).to have_received(:transform_and).with(node)
     end
   end
 

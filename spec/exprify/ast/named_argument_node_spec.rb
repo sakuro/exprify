@@ -6,11 +6,11 @@ RSpec.describe Exprify::AST::NamedArgumentNode do
   let(:node) { described_class.new("name", "value") }
 
   describe "#accept" do
-    it "calls visit_named_argument on visitor" do
-      visitor = instance_double(Exprify::Transformers::Base)
-      allow(visitor).to receive(:visit_named_argument).with(node)
-      node.accept(visitor)
-      expect(visitor).to have_received(:visit_named_argument).with(node)
+    it "calls transform_named_argument on transformer" do
+      transformer = instance_double(Exprify::Transformers::Base)
+      allow(transformer).to receive(:transform_named_argument).with(node)
+      node.accept(transformer)
+      expect(transformer).to have_received(:transform_named_argument).with(node)
     end
   end
 

@@ -6,11 +6,11 @@ RSpec.describe Exprify::AST::KeywordNode do
   let(:node) { described_class.new("test") }
 
   describe "#accept" do
-    it "calls visit_keyword on visitor" do
-      visitor = instance_double(Exprify::Transformers::Base)
-      allow(visitor).to receive(:visit_keyword).with(node)
-      node.accept(visitor)
-      expect(visitor).to have_received(:visit_keyword).with(node)
+    it "calls transform_keyword on transformer" do
+      transformer = instance_double(Exprify::Transformers::Base)
+      allow(transformer).to receive(:transform_keyword).with(node)
+      node.accept(transformer)
+      expect(transformer).to have_received(:transform_keyword).with(node)
     end
   end
 

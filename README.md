@@ -20,7 +20,7 @@ See {file:TODO.md TODO} for planned features and improvements.
 
 ### AST transformation
 
-To use the AST, implement a transformer class by extending `Exprify::Transformers::Base`. The transformer visits each node in the AST and converts it to your desired format.
+To use the AST, implement a transformer class by extending `Exprify::Transformers::Base`. The transformer transforms each node in the AST and converts it to your desired format.
 
 An example implementation is included:
 
@@ -65,35 +65,35 @@ ast = parser.parse('(ruby OR gem) tag:"web framework"')
 
 ### Implementing a transformer
 
-Create your transformer by implementing the visitor methods for each node type:
+Create your transformer by implementing the transform methods for each node type:
 
 ```ruby
 class MyTransformer < Exprify::Transformers::Base
-  def visit_keyword(node)
+  def transform_keyword(node)
     # Transform keyword node
   end
 
-  def visit_and(node)
+  def transform_and(node)
     # Transform AND node
   end
 
-  def visit_or(node)
+  def transform_or(node)
     # Transform OR node
   end
 
-  def visit_not(node)
+  def transform_not(node)
     # Transform NOT node
   end
 
-  def visit_group(node)
+  def transform_group(node)
     # Transform group node
   end
 
-  def visit_exact_phrase(node)
+  def transform_exact_phrase(node)
     # Transform exact phrase node
   end
 
-  def visit_named_argument(node)
+  def transform_named_argument(node)
     # Transform named argument node
   end
 end
@@ -128,7 +128,7 @@ The parser generates an AST with the following node types:
 
 1. Input string is tokenized
 2. Tokens are parsed into an AST
-3. AST is visited by a transformer
+3. AST is transformed by a transformer
 4. Transformer generates the desired output format
 
 ## Development

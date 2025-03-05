@@ -4,41 +4,49 @@ require_relative "node"
 
 module Exprify
   module AST
-    # Node representing a NOT operation
+    # Node representing a NOT operation.
+    #
+    # A NOT node represents a logical negation of a search term,
+    # where the expression must not match for the NOT operation to succeed.
     class NotNode < Node
-      # @return [Node] The expression to negate
+      # @return [Node] The expression to negate.
       attr_reader :expression
 
-      # Initialize a new NOT node
+      # Initialize a new NOT node.
       #
-      # @param expression [Node] The expression to negate
-      # @return [NotNode] A new NOT node
+      # @param expression [Node] The expression to negate.
+      # @return [NotNode] A new instance of NotNode.
       def initialize(expression)
         super()
         @expression = expression
       end
 
-      # Accept a visitor
+      # Accept a transformer.
       #
-      # @param visitor [Object] The visitor object
-      # @return [Object] The result of the visit
-      def accept(visitor)
-        visitor.visit_not(self)
+      # Dispatches to the transformer's transform_not method with self as the argument.
+      #
+      # @param transformer [Exprify::Transformers::Base] The transformer object that implements transform_not.
+      # @return [Object] The result of the transform operation.
+      def accept(transformer)
+        transformer.transform_not(self)
       end
 
-      # Return a string representation of the node
+      # Return a string representation of the node.
       #
-      # @return [String] The string representation
+      # @return [String] The string representation containing the node's class name and expression.
       def inspect
         "#<NotNode expression=#{expression.inspect}>"
       end
 
-      # Pretty print the node
+      # Pretty print the node.
       #
-      # @param pp [PP] The pretty printer
+      # Outputs a human-readable representation of the node and its expression
+      # using Ruby's pretty print facility.
+      #
+      # @param pp [PP] The pretty printer instance.
       # @return [void]
       def pretty_print(pp)
-        pp.text("NotNode")
+        super
         pp.nest(2) do
           pp.breakable
           pp.text("expression: ")

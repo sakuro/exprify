@@ -7,11 +7,11 @@ RSpec.describe Exprify::AST::GroupNode do
   let(:node) { described_class.new(keyword) }
 
   describe "#accept" do
-    it "calls visit_group on visitor" do
-      visitor = instance_double(Exprify::Transformers::Base)
-      allow(visitor).to receive(:visit_group).with(node)
-      node.accept(visitor)
-      expect(visitor).to have_received(:visit_group).with(node)
+    it "calls transform_group on transformer" do
+      transformer = instance_double(Exprify::Transformers::Base)
+      allow(transformer).to receive(:transform_group).with(node)
+      node.accept(transformer)
+      expect(transformer).to have_received(:transform_group).with(node)
     end
   end
 

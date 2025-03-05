@@ -4,41 +4,49 @@ require_relative "node"
 
 module Exprify
   module AST
-    # Node representing a grouped expression
+    # Node representing a grouped expression.
+    #
+    # A group node represents a parenthesized expression in the input,
+    # which controls operator precedence in the search expression.
     class GroupNode < Node
-      # @return [Node] The grouped expression
+      # @return [Node] The expression within the group.
       attr_reader :expression
 
-      # Initialize a new group node
+      # Initialize a new group node.
       #
-      # @param expression [Node] The grouped expression
-      # @return [GroupNode] A new group node
+      # @param expression [Node] The expression within the group.
+      # @return [GroupNode] A new instance of GroupNode.
       def initialize(expression)
         super()
         @expression = expression
       end
 
-      # Accept a visitor
+      # Accept a transformer.
       #
-      # @param visitor [Object] The visitor object
-      # @return [Object] The result of the visit
-      def accept(visitor)
-        visitor.visit_group(self)
+      # Dispatches to the transformer's transform_group method with self as the argument.
+      #
+      # @param transformer [Exprify::Transformers::Base] The transformer object that implements transform_group.
+      # @return [Object] The result of the transform operation.
+      def accept(transformer)
+        transformer.transform_group(self)
       end
 
-      # Return a string representation of the node
+      # Return a string representation of the node.
       #
-      # @return [String] The string representation
+      # @return [String] The string representation containing the node's class name and expression.
       def inspect
         "#<GroupNode expression=#{expression.inspect}>"
       end
 
-      # Pretty print the node
+      # Pretty print the node.
       #
-      # @param pp [PP] The pretty printer
+      # Outputs a human-readable representation of the node and its expression
+      # using Ruby's pretty print facility.
+      #
+      # @param pp [PP] The pretty printer instance.
       # @return [void]
       def pretty_print(pp)
-        pp.text("GroupNode")
+        super
         pp.nest(2) do
           pp.breakable
           pp.text("expression: ")

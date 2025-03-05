@@ -6,11 +6,11 @@ RSpec.describe Exprify::AST::ExactPhraseNode do
   let(:node) { described_class.new("test phrase") }
 
   describe "#accept" do
-    it "calls visit_exact_phrase on visitor" do
-      visitor = instance_double(Exprify::Transformers::Base)
-      allow(visitor).to receive(:visit_exact_phrase).with(node)
-      node.accept(visitor)
-      expect(visitor).to have_received(:visit_exact_phrase).with(node)
+    it "calls transform_exact_phrase on transformer" do
+      transformer = instance_double(Exprify::Transformers::Base)
+      allow(transformer).to receive(:transform_exact_phrase).with(node)
+      node.accept(transformer)
+      expect(transformer).to have_received(:transform_exact_phrase).with(node)
     end
   end
 

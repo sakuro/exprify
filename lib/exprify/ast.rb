@@ -10,7 +10,10 @@ require_relative "ast/not_node"
 require_relative "ast/or_node"
 
 module Exprify
-  # Abstract Syntax Tree nodes for representing search expressions
+  # Abstract Syntax Tree nodes for representing search expressions.
+  #
+  # This module contains all the node types used to build the AST
+  # after parsing a search expression.
   module AST
   end
 end

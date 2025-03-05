@@ -18,12 +18,14 @@ module Exprify
         @value = value
       end
 
-      # Accept a visitor
+      # Accept a transformer.
       #
-      # @param visitor [Object] The visitor object
-      # @return [Object] The result of the visit
-      def accept(visitor)
-        visitor.visit_keyword(self)
+      # Dispatches to the transformer's transform_keyword method with self as the argument.
+      #
+      # @param transformer [Exprify::Transformers::Base] The transformer object that implements transform_keyword.
+      # @return [Object] The result of the transform operation.
+      def accept(transformer)
+        transformer.transform_keyword(self)
       end
 
       # Return a string representation of the node

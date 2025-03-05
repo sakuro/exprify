@@ -2,70 +2,97 @@
 
 module Exprify
   module Transformers
-    # Base class for all transformers
-    # Provides default implementations for AST node visitors
+    # Base class for all transformers.
+    #
+    # This class provides a framework for implementing AST transformers.
+    # Each transformer should inherit from this class and implement
+    # the transform methods for each type of AST node.
     class Base
-      # Transform the given AST into a specific format
+      # Transform the given AST into a specific format.
       #
-      # @param ast [Object] The AST node to transform
-      # @return [Object] The transformed result
+      # This is the main entry point for transforming an AST.
+      # It delegates to the appropriate transform method based on the node type.
+      #
+      # @param ast [Exprify::AST::Node] The AST node to transform.
+      # @return [Object] The transformed result.
       def transform(ast)
         ast.accept(self)
       end
 
-      # Visit an AND node and transform its children
+      # Transform an AND node and its children.
       #
-      # @param node [Object] The AND node to visit
-      # @return [Object] The transformed result
-      def visit_and(node)
+      # Subclasses must implement this method to handle nodes that
+      # represent AND operations between multiple terms.
+      #
+      # @param node [Exprify::AST::AndNode] The AND node to transform.
+      # @return [Object] The transformed result.
+      def transform_and(node)
         raise NotImplementedError
       end
 
-      # Visit an OR node and transform its children
+      # Transform an OR node and its children.
       #
-      # @param node [Object] The OR node to visit
-      # @return [Object] The transformed result
-      def visit_or(node)
+      # Subclasses must implement this method to handle nodes that
+      # represent OR operations between multiple terms.
+      #
+      # @param node [Exprify::AST::OrNode] The OR node to transform.
+      # @return [Object] The transformed result.
+      def transform_or(node)
         raise NotImplementedError
       end
 
-      # Visit a NOT node and transform its child
+      # Transform a NOT node and its child.
       #
-      # @param node [Object] The NOT node to visit
-      # @return [Object] The transformed result
-      def visit_not(node)
+      # Subclasses must implement this method to handle nodes that
+      # represent negation of a term.
+      #
+      # @param node [Exprify::AST::NotNode] The NOT node to transform.
+      # @return [Object] The transformed result.
+      def transform_not(node)
         raise NotImplementedError
       end
 
-      # Visit a keyword node and transform it
+      # Transform a keyword node.
       #
-      # @param node [Object] The keyword node to visit
-      # @return [Object] The transformed result
-      def visit_keyword(node)
+      # Subclasses must implement this method to handle nodes that
+      # represent simple search keywords.
+      #
+      # @param node [Exprify::AST::KeywordNode] The keyword node to transform.
+      # @return [Object] The transformed result.
+      def transform_keyword(node)
         raise NotImplementedError
       end
 
-      # Visit a group node and transform its child
+      # Transform a group node and its child.
       #
-      # @param node [Object] The group node to visit
-      # @return [Object] The transformed result
-      def visit_group(node)
+      # Subclasses must implement this method to handle nodes that
+      # represent grouped expressions (parentheses).
+      #
+      # @param node [Exprify::AST::GroupNode] The group node to transform.
+      # @return [Object] The transformed result.
+      def transform_group(node)
         raise NotImplementedError
       end
 
-      # Visit an exact phrase node and transform it
+      # Transform an exact phrase node.
       #
-      # @param node [Object] The exact phrase node to visit
-      # @return [Object] The transformed result
-      def visit_exact_phrase(node)
+      # Subclasses must implement this method to handle nodes that
+      # represent exact phrase matches (quoted strings).
+      #
+      # @param node [Exprify::AST::ExactPhraseNode] The exact phrase node to transform.
+      # @return [Object] The transformed result.
+      def transform_exact_phrase(node)
         raise NotImplementedError
       end
 
-      # Visit a named argument node and transform it
+      # Transform a named argument node.
       #
-      # @param node [Object] The named argument node to visit
-      # @return [Object] The transformed result
-      def visit_named_argument(node)
+      # Subclasses must implement this method to handle nodes that
+      # represent key-value pairs (field:value).
+      #
+      # @param node [Exprify::AST::NamedArgumentNode] The named argument node to transform.
+      # @return [Object] The transformed result.
+      def transform_named_argument(node)
         raise NotImplementedError
       end
     end

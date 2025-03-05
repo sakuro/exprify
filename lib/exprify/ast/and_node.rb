@@ -4,38 +4,46 @@ require_relative "node"
 
 module Exprify
   module AST
-    # Node representing an AND operation
+    # Node representing an AND operation.
+    #
+    # An AND node represents a logical conjunction of multiple search terms,
+    # where all child nodes must match for the AND operation to succeed.
     class AndNode < Node
-      # @return [Array<Node>] The child nodes
+      # @return [Array<Node>] The child nodes that must all match.
       attr_reader :children
 
-      # Initialize a new AND node
+      # Initialize a new AND node.
       #
-      # @param children [Array<Node>] The child nodes
-      # @return [AndNode] A new AND node
+      # @param children [Array<Node>] The child nodes that must all match.
+      # @return [AndNode] A new instance of AndNode.
       def initialize(*children)
         super()
         @children = children
       end
 
-      # Accept a visitor
+      # Accept a transformer.
       #
-      # @param visitor [Object] The visitor object
-      # @return [Object] The result of the visit
-      def accept(visitor)
-        visitor.visit_and(self)
+      # Dispatches to the transformer's transform_and method with self as the argument.
+      #
+      # @param transformer [Exprify::Transformers::Base] The transformer object that implements transform_and.
+      # @return [Object] The result of the transform operation.
+      def accept(transformer)
+        transformer.transform_and(self)
       end
 
-      # Return a string representation of the node
+      # Return a string representation of the node.
       #
-      # @return [String] The string representation
+      # @return [String] The string representation containing the node's class name and children.
       def inspect
         "#<AndNode children=[#{children.map(&:inspect).join(", ")}]>"
       end
 
-      # Pretty print the node
+      # Pretty print the node.
       #
-      # @param pp [PP] The pretty printer
+      # Outputs a human-readable representation of the node and its children
+      # using Ruby's pretty print facility.
+      #
+      # @param pp [PP] The pretty printer instance.
       # @return [void]
       def pretty_print(pp)
         super

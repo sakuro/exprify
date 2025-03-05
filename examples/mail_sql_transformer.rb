@@ -5,22 +5,31 @@ $LOAD_PATH.unshift(File.expand_path("../lib", __dir__)) if $PROGRAM_NAME == __FI
 require "date"
 require "exprify"
 
-# Example transformer that converts search expressions into SQL WHERE clauses
-# This transformer generates SQL conditions suitable for email search
+# Example transformer that converts search expressions into SQL WHERE clauses.
+#
+# This transformer generates SQL conditions suitable for email search by
+# converting AST nodes into SQL conditions that match against email fields
+# like subject and body.
 class MailSqlTransformer < Exprify::Transformers::Base
-  # Visit a keyword node and transform it into a SQL LIKE condition
+  # Transform a keyword node into a SQL LIKE condition.
   #
-  # @param node [Object] The keyword node to visit
-  # @return [Array<String, Array>] SQL condition and parameters
-  def visit_keyword(node)
+  # Generates conditions that match the keyword at the start of the subject
+  # or anywhere in the body.
+  #
+  # @param node [Exprify::AST::KeywordNode] The keyword node to transform.
+  # @return [Array<String, Array<String>>] SQL condition and parameters.
+  def transform_keyword(node)
     ["(subject LIKE ? OR body LIKE ?)", ["#{node.value}%", "%#{node.value}%"]]
   end
 
-  # Visit an AND node and combine its children with SQL AND
+  # Transform an AND node and combine its children with SQL AND.
   #
-  # @param node [Object] The AND node to visit
-  # @return [Array<String, Array>] SQL condition and parameters
-  def visit_and(node)
+  # Combines multiple conditions with AND to match all terms
+  # in the search expression.
+  #
+  # @param node [Exprify::AST::AndNode] The AND node to transform.
+  # @return [Array<String, Array<String>>] SQL condition and parameters.
+  def transform_and(node)
     conditions = []
     params = []
 
@@ -33,11 +42,14 @@ class MailSqlTransformer < Exprify::Transformers::Base
     [conditions.join(" AND "), params]
   end
 
-  # Visit an OR node and combine its children with SQL OR
+  # Transform an OR node and combine its children with SQL OR.
   #
-  # @param node [Object] The OR node to visit
-  # @return [Array<String, Array>] SQL condition and parameters
-  def visit_or(node)
+  # Combines multiple conditions with OR to match any of the terms
+  # in the search expression.
+  #
+  # @param node [Exprify::AST::OrNode] The OR node to transform.
+  # @return [Array<String, Array<String>>] SQL condition and parameters.
+  def transform_or(node)
     conditions = []
     params = []
 
@@ -50,37 +62,50 @@ class MailSqlTransformer < Exprify::Transformers::Base
     [conditions.join(" OR "), params]
   end
 
-  # Visit a NOT node and negate its child condition
+  # Transform a NOT node and negate its child condition.
   #
-  # @param node [Object] The NOT node to visit
-  # @return [Array<String, Array>] SQL condition and parameters
-  def visit_not(node)
+  # Wraps the child condition in a NOT clause to exclude matches
+  # from the search results.
+  #
+  # @param node [Exprify::AST::NotNode] The NOT node to transform.
+  # @return [Array<String, Array<String>>] SQL condition and parameters.
+  def transform_not(node)
     sql, params = node.expression.accept(self)
     ["NOT (#{sql})", params]
   end
 
-  # Visit an exact phrase node and transform it into a SQL = condition
+  # Transform an exact phrase node into a SQL = condition.
   #
-  # @param node [Object] The exact phrase node to visit
-  # @return [Array<String, Array>] SQL condition and parameters
-  def visit_exact_phrase(node)
+  # Generates conditions that require an exact match of the phrase
+  # in either the subject or body.
+  #
+  # @param node [Exprify::AST::ExactPhraseNode] The exact phrase node to transform.
+  # @return [Array<String, Array<String>>] SQL condition and parameters.
+  def transform_exact_phrase(node)
     ["(subject = ? OR body = ?)", [node.phrase, node.phrase]]
   end
 
-  # Visit a group node and transform its child
+  # Transform a group node and its expression.
   #
-  # @param node [Object] The group node to visit
-  # @return [Array<String, Array>] SQL condition and parameters
-  def visit_group(node)
-    sql, params = node.child.accept(self)
+  # Wraps the expression's condition in parentheses to maintain proper
+  # operator precedence.
+  #
+  # @param node [Exprify::AST::GroupNode] The group node to transform.
+  # @return [Array<String, Array<String>>] SQL condition and parameters.
+  def transform_group(node)
+    sql, params = node.expression.accept(self)
     ["(#{sql})", params]
   end
 
-  # Visit a named argument node and transform it into a date-based SQL condition
+  # Transform a named argument node into a date-based SQL condition.
   #
-  # @param node [Object] The named argument node to visit
-  # @return [Array<String, Array>] SQL condition and parameters
-  def visit_named_argument(node)
+  # Handles 'since' and 'until' arguments by converting them into
+  # date comparison conditions. Supports both explicit dates and
+  # relative terms like 'today'.
+  #
+  # @param node [Exprify::AST::NamedArgumentNode] The named argument node to transform.
+  # @return [Array<String, Array<String>>] SQL condition and parameters.
+  def transform_named_argument(node)
     case node.name
     when "since"
       ["date >= ?", [parse_date(node.value).to_s]]
@@ -91,10 +116,13 @@ class MailSqlTransformer < Exprify::Transformers::Base
     end
   end
 
-  # Parse a date string into a Date object
+  # Parse a date string into a Date object.
   #
-  # @param value [String] The date string to parse
-  # @return [Date] The parsed date
+  # Supports both standard date formats and special keywords
+  # like 'today', 'tomorrow', and 'yesterday'.
+  #
+  # @param value [String] The date string to parse.
+  # @return [Date] The parsed date.
   private def parse_date(value)
     case value.downcase
     when "today"
@@ -112,9 +140,12 @@ end
 if $PROGRAM_NAME == __FILE__
   require "pp"
 
-  # Transform the input string and print the result
+  # Transform the input string and print the result.
   #
-  # @param input [String] The input search expression
+  # Demonstrates the transformer by parsing and transforming
+  # various search expressions into SQL conditions.
+  #
+  # @param input [String] The input search expression.
   # @return [void]
   def transform_and_print(input)
     parser = Exprify::Parser.new

@@ -4,36 +4,45 @@ require "pp"
 
 module Exprify
   module AST
-    # Base class for all AST nodes
+    # Base class for all AST nodes.
     class Node
-      # Accept a visitor and dispatch to the appropriate visit method
+      # Accept a transformer and dispatch to the appropriate transform method.
       #
-      # @param visitor [Object] The visitor object
-      # @return [Object] The result of the visit
-      def accept(visitor)
+      # This is an implementation of the visitor pattern that allows operations
+      # to be performed on the AST without modifying the node classes.
+      #
+      # @param transformer [Exprify::Transformers::Base] The transformer object that implements transform_* methods.
+      # @return [Object] The result of the transform operation.
+      def accept(transformer)
         raise NotImplementedError
       end
 
-      # Return a string representation of the node
+      # Return a string representation of the node.
       #
-      # @return [String] The string representation
+      # @return [String] The string representation containing the node's class name.
       def inspect
         "#<#{self.class.name.split("::").last}>"
       end
 
-      # Pretty print the node
+      # Pretty print the node.
       #
-      # @param pp [PP] The pretty printer
+      # Outputs a human-readable representation of the node using
+      # Ruby's pretty print facility.
+      #
+      # @param pp [PP] The pretty printer instance.
       # @return [void]
       def pretty_print(pp)
         pp.text(self.class.name.split("::").last)
       end
 
-      # Pretty print an array of child nodes
+      # Pretty print an array of child nodes.
       #
-      # @param pp [PP] The pretty printer
-      # @param label [String] The label for the array
-      # @param children [Array<Node>] The child nodes to print
+      # Formats child nodes with proper indentation and separators
+      # for improved readability.
+      #
+      # @param pp [PP] The pretty printer instance.
+      # @param label [String] The label for the array of children.
+      # @param children [Array<Node>] The child nodes to print.
       # @return [void]
       private def pretty_print_children(pp, label, children)
         pp.nest(2) do
