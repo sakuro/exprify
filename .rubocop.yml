@@ -30,9 +30,20 @@ inherit_from:
   - .rubocop/security.yml
   - .rubocop/style.yml
 
+# Parser spec requires detailed verification of AST structures, which inherently
+# leads to longer test cases. Each test needs to verify multiple aspects of the
+# parsed nodes (type, value, children) to ensure correct parsing behavior.
+# Breaking these into smaller examples would reduce the readability and make
+# the test intentions less clear.
+#
+# Pretty printing tests need to verify multiple aspects of the output:
+# node types, values, indentation, and overall structure. These verifications
+# are strongly related and share setup context. Splitting them would obscure
+# the relationship between different aspects of the pretty printed output.
 RSpec/ExampleLength:
   Exclude:
     - 'spec/exprify/parser_spec.rb'
+    - 'spec/exprify/ast_spec.rb'
 
 # Parser class handles complex parsing logic and requires significant complexity
 # to properly implement the search expression grammar.

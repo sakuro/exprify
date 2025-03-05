@@ -11,8 +11,3 @@
 Bundler/GemComment:
   Exclude:
     - 'Gemfile'
-
-# Configuration parameters: Max, CountAsOne.
-RSpec/ExampleLength:
-  Exclude:
-    - 'spec/exprify/ast_spec.rb'
