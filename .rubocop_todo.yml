@@ -16,10 +16,3 @@ Bundler/GemComment:
 RSpec/ExampleLength:
   Exclude:
     - 'spec/exprify/ast_spec.rb'
-
-# Configuration parameters: Max.
-RSpec/MultipleExpectations:
-  Exclude:
-    - 'examples/mail_sql_transformer_spec.rb'
-    - 'spec/exprify/ast_spec.rb'
-    - 'spec/exprify/parser_spec.rb'

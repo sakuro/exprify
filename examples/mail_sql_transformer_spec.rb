@@ -48,19 +48,34 @@ RSpec.describe MailSqlTransformer do
   end
 
   describe "date arguments" do
-    it "transforms ISO 8601 date" do
-      expect(transform("since:2024-01-01")).to eq ["date >= ?", ["2024-01-01"]]
-      expect(transform("until:2024-12-31")).to eq ["date <= ?", ["2024-12-31"]]
+    describe "ISO 8601 date" do
+      it "transforms since: argument" do
+        expect(transform("since:2024-01-01")).to eq ["date >= ?", ["2024-01-01"]]
+      end
+
+      it "transforms until: argument" do
+        expect(transform("until:2024-12-31")).to eq ["date <= ?", ["2024-12-31"]]
+      end
     end
 
-    it "transforms month name date format" do
-      expect(transform('since:"Mar 5 2025"')).to eq ["date >= ?", ["2025-03-05"]]
-      expect(transform('until:"Dec 31 2025"')).to eq ["date <= ?", ["2025-12-31"]]
+    describe "month name date format" do
+      it "transforms since: argument" do
+        expect(transform('since:"Mar 5 2025"')).to eq ["date >= ?", ["2025-03-05"]]
+      end
+
+      it "transforms until: argument" do
+        expect(transform('until:"Dec 31 2025"')).to eq ["date <= ?", ["2025-12-31"]]
+      end
     end
 
-    it "transforms relative dates" do
-      expect(transform('since:"today"')).to eq ["date >= ?", [Date.today.to_s]]
-      expect(transform('until:"tomorrow"')).to eq ["date <= ?", [(Date.today + 1).to_s]]
+    describe "relative dates" do
+      it "transforms since: argument" do
+        expect(transform('since:"today"')).to eq ["date >= ?", [Date.today.to_s]]
+      end
+
+      it "transforms until: argument" do
+        expect(transform('until:"tomorrow"')).to eq ["date <= ?", [(Date.today + 1).to_s]]
+      end
     end
   end
 
