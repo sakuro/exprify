@@ -3,6 +3,7 @@
 require "rspec/core/rake_task"
 
 namespace :examples do
+  desc "Run example transformer specs"
   RSpec::Core::RakeTask.new(:spec) do |t|
     t.pattern = "examples/**/*_spec.rb"
     t.ruby_opts = %w[-I examples]
