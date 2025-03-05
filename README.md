@@ -58,9 +58,36 @@ parser = Exprify::Parser.new
 
 # Parse a simple expression
 ast = parser.parse("ruby gem -deprecated")
+#=> AndNode
+#     children: [
+#       GroupNode
+#         expression: OrNode
+#           children: [
+#             KeywordNode
+#               value: "ruby",
+#             KeywordNode
+#               value: "gem"
+#           ],
+#       NamedArgumentNode
+#         name: "tag"
+#         value: "web framework"
 
 # Parse with grouping and operators
 ast = parser.parse('(ruby OR gem) tag:"web framework"')
+#=> AndNode
+#     children: [
+#       GroupNode
+#         expression: OrNode
+#           children: [
+#             KeywordNode
+#               value: "ruby",
+#             KeywordNode
+#               value: "gem"
+#           ],
+#       NamedArgumentNode
+#         name: "tag"
+#         value: "web framework"
+#     ]
 ```
 
 ### Implementing a transformer
