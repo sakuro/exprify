@@ -24,7 +24,7 @@ To use the AST, implement a transformer class by extending `Exprify::Transformer
 
 An example implementation is included:
 
-- `MailSqlTransformer` (`lib/exprify/transformers/mail_sql_transformer.rb`) - Generates SQL conditions for filtering RFC822 messages
+- `MailSqlTransformer` (`examples/mail_sql_transformer.rb`) - Generates SQL conditions for filtering RFC822 messages
 
 ## Installation
 
@@ -104,7 +104,7 @@ result = transformer.transform(ast)
 ```
 
 See the included transformer for an implementation example:
-- `MailSqlTransformer` (`lib/exprify/transformers/mail_sql_transformer.rb`) - SQL condition generation for RFC822 message filtering
+- `MailSqlTransformer` (`examples/mail_sql_transformer.rb`) - SQL condition generation for RFC822 message filtering
 
 ## Design
 
