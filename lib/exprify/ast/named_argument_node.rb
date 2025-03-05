@@ -31,7 +31,8 @@ module Exprify
       #
       # Dispatches to the transformer's transform_named_argument method with self as the argument.
       #
-      # @param transformer [Exprify::Transformers::Base] The transformer object that implements transform_named_argument.
+      # @param transformer [Exprify::Transformers::Base] The transformer object
+      #   that implements transform_named_argument.
       # @return [Object] The result of the transform operation.
       def accept(transformer)
         transformer.transform_named_argument(self)
