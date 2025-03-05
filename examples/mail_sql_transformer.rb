@@ -13,13 +13,13 @@ require "exprify"
 class MailSqlTransformer < Exprify::Transformers::Base
   # Transform a keyword node into a SQL LIKE condition.
   #
-  # Generates conditions that match the keyword at the start of the subject
-  # or anywhere in the body.
+  # Generates conditions that match the keyword anywhere in the subject
+  # or body.
   #
   # @param node [Exprify::AST::KeywordNode] The keyword node to transform.
   # @return [Array<String, Array<String>>] SQL condition and parameters.
   def transform_keyword(node)
-    ["(subject LIKE ? OR body LIKE ?)", ["#{node.value}%", "%#{node.value}%"]]
+    ["(subject LIKE ? OR body LIKE ?)", ["%#{node.value}%", "%#{node.value}%"]]
   end
 
   # Transform an AND node and combine its children with SQL AND.
