@@ -67,17 +67,3 @@ RSpec/MultipleExpectations:
 Style/ConstantVisibility:
   Exclude:
     - 'lib/exprify/version.rb'
-
-# Configuration parameters: AllowedConstants.
-Style/Documentation:
-  Exclude:
-    - 'lib/exprify/ast.rb'
-    - 'lib/exprify/parser.rb'
-    - 'lib/exprify/transformers.rb'
-
-# Configuration parameters: AllowedMethods, RequireForNonPublicMethods.
-Style/DocumentationMethod:
-  Exclude:
-    - 'lib/exprify/ast.rb'
-    - 'lib/exprify/parser.rb'
-    - 'lib/exprify/transformers.rb'
