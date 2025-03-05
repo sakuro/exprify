@@ -18,7 +18,7 @@ module Exprify
     #
     # @return [Parser] A new parser instance
     def initialize
-      # 将来的にオプションを受け付ける予定
+      # noop
     end
 
     # Parse the input string into an AST
@@ -59,7 +59,7 @@ module Exprify
             tokens << Token.new(type: :not, value: char)
             pos += 1
           else
-            # ハイフンを含む単語として処理
+            # Treat as a word containing a hyphen
             word, end_pos = scan_to_boundary(input, pos)
             tokens << Token.new(type: :keyword, value: word)
             pos = end_pos
@@ -95,7 +95,7 @@ module Exprify
         if char == '"'
           in_quotes = !in_quotes
         elsif !in_quotes
-          # 引用符の外側では特殊文字をチェック
+          # Check for special characters outside quotes
           break if char =~ /\s/
           break if char =~ SPECIAL_CHARS && char != ":" && char != '"'
         end
@@ -128,18 +128,18 @@ module Exprify
       return Token.new(type: :operator, value: word) if OPERATORS.include?(word)
       return Token.new(type: :keyword, value: word) unless word.include?(":")
 
-      # 最初のコロンの位置を見つける
+      # Find the position of the first colon
       colon_pos = word.index(":")
       name = word[0...colon_pos]
       value = word[colon_pos + 1..]
 
-      # 名前が空の場合はキーワードとして扱う
+      # If name is empty, treat as a keyword
       return Token.new(type: :keyword, value: word) if name.empty?
 
-      # 値が引用符で囲まれている場合は引用符を除去
-      value = value[1..-2] if value.start_with?('"') && value.end_with?('"') && value.length >= 2
+      # If value is quoted, remove quotes
+      value = value[1..-2] if value.start_with?('"') && value.end_with?('"')
 
-      # 値が空の場合はキーワードとして扱う
+      # If value is empty, treat as a keyword
       return Token.new(type: :keyword, value: word) if value.empty?
 
       Token.new(type: :named_arg, value: [name, value])
