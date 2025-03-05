@@ -33,3 +33,34 @@ inherit_from:
 RSpec/ExampleLength:
   Exclude:
     - 'spec/exprify/parser_spec.rb'
+
+# Parser class handles complex parsing logic and requires significant complexity
+# to properly implement the search expression grammar.
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/exprify/parser.rb'
+
+# Parser class needs to handle various parsing cases and maintain state,
+# resulting in a necessarily larger class size.
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/exprify/parser.rb'
+
+# Parser methods involve multiple conditional branches to handle different
+# token patterns and expression types.
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/exprify/parser.rb'
+
+# AST and Parser methods need to handle complex logic that cannot be
+# meaningfully split into smaller methods without sacrificing clarity.
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/exprify/ast.rb'
+    - 'lib/exprify/parser.rb'
+
+# Parser methods require multiple condition checks and branching paths
+# to properly handle the parsing logic.
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'lib/exprify/parser.rb'

@@ -12,32 +12,6 @@ Bundler/GemComment:
   Exclude:
     - 'Gemfile'
 
-# Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes, Max.
-Metrics/AbcSize:
-  Exclude:
-    - 'lib/exprify/parser.rb'
-
-# Configuration parameters: CountComments, Max, CountAsOne.
-Metrics/ClassLength:
-  Exclude:
-    - 'lib/exprify/parser.rb'
-
-# Configuration parameters: AllowedMethods, AllowedPatterns, Max.
-Metrics/CyclomaticComplexity:
-  Exclude:
-    - 'lib/exprify/parser.rb'
-
-# Configuration parameters: CountComments, Max, CountAsOne, AllowedMethods, AllowedPatterns.
-Metrics/MethodLength:
-  Exclude:
-    - 'lib/exprify/ast.rb'
-    - 'lib/exprify/parser.rb'
-
-# Configuration parameters: AllowedMethods, AllowedPatterns, Max.
-Metrics/PerceivedComplexity:
-  Exclude:
-    - 'lib/exprify/parser.rb'
-
 # Configuration parameters: Max, CountAsOne.
 RSpec/ExampleLength:
   Exclude:
@@ -46,5 +20,6 @@ RSpec/ExampleLength:
 # Configuration parameters: Max.
 RSpec/MultipleExpectations:
   Exclude:
+    - 'examples/mail_sql_transformer_spec.rb'
     - 'spec/exprify/ast_spec.rb'
     - 'spec/exprify/parser_spec.rb'
