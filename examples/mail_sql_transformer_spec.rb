@@ -7,6 +7,10 @@ RSpec.describe MailSqlTransformer do
 
   let(:parser) { Exprify::Parser.new }
 
+  # Helper method to transform input string into SQL conditions
+  #
+  # @param input [String] The input search expression
+  # @return [Array<String, Array>] SQL condition and parameters
   def transform(input)
     transformer.transform(parser.parse(input))
   end

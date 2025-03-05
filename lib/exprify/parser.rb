@@ -14,10 +14,18 @@ module Exprify
     OPERATORS = %w[OR].freeze
     private_constant :OPERATORS
 
+    # Initialize a new parser
+    #
+    # @return [Parser] A new parser instance
     def initialize
       # 将来的にオプションを受け付ける予定
     end
 
+    # Parse the input string into an AST
+    #
+    # @param input [String] The input search expression
+    # @return [AST::Node] The root node of the AST
+    # @raise [Error] If the input is invalid
     def parse(input)
       raise Error, "Empty input" if input.nil? || input.strip.empty?
 
@@ -26,6 +34,10 @@ module Exprify
       parse_expression
     end
 
+    # Convert input string into a sequence of tokens
+    #
+    # @param input [String] The input search expression
+    # @return [Array<Token>] The sequence of tokens
     private def tokenize(input)
       tokens = []
       pos = 0
@@ -68,6 +80,11 @@ module Exprify
       tokens
     end
 
+    # Scan input until a boundary character is found
+    #
+    # @param input [String] The input search expression
+    # @param start [Integer] The starting position
+    # @return [Array<String, Integer>] The scanned word and the ending position
     private def scan_to_boundary(input, start)
       pos = start
       in_quotes = false
@@ -89,6 +106,12 @@ module Exprify
       [input[start...pos], pos]
     end
 
+    # Scan a quoted phrase
+    #
+    # @param input [String] The input search expression
+    # @param start [Integer] The starting position (after the opening quote)
+    # @return [Array<String, Integer>] The phrase and the ending position
+    # @raise [Error] If the phrase is not properly terminated
     private def scan_phrase(input, start)
       pos = start
       pos += 1 while pos < input.length && input[pos] != '"'
@@ -97,6 +120,10 @@ module Exprify
       [input[start...pos], pos + 1]
     end
 
+    # Process a word into a token
+    #
+    # @param word [String] The word to process
+    # @return [Token] The processed token
     private def process_word(word)
       return Token.new(type: :operator, value: word) if OPERATORS.include?(word)
       return Token.new(type: :keyword, value: word) unless word.include?(":")
@@ -118,6 +145,10 @@ module Exprify
       Token.new(type: :named_arg, value: [name, value])
     end
 
+    # Parse an expression (sequence of terms joined by OR)
+    #
+    # @return [AST::Node] The root node of the expression
+    # @raise [Error] If the expression is invalid
     private def parse_expression
       terms = [parse_term]
       raise Error, "No valid expression found" if terms.first.nil?
@@ -135,6 +166,10 @@ module Exprify
       AST::OrNode.new(*terms)
     end
 
+    # Parse a term (sequence of factors)
+    #
+    # @return [AST::Node] The root node of the term
+    # @raise [Error] If the term is invalid
     private def parse_term
       nodes = []
 
@@ -156,6 +191,10 @@ module Exprify
       AST::AndNode.new(*nodes)
     end
 
+    # Parse a factor (keyword, phrase, named argument, or group)
+    #
+    # @return [AST::Node] The root node of the factor
+    # @raise [Error] If the factor is invalid
     private def parse_factor
       token = current_token
       case token.type
@@ -182,14 +221,25 @@ module Exprify
       end
     end
 
+    # Get the current token
+    #
+    # @return [Token, nil] The current token or nil if at end of input
     private def current_token
       @tokens[@position]
     end
 
+    # Move to the next token
+    #
+    # @return [void]
     private def consume_token
       @position += 1
     end
 
+    # Expect a token of a specific type
+    #
+    # @param type [Symbol] The expected token type
+    # @return [void]
+    # @raise [Error] If the current token is not of the expected type
     private def expect(type)
       token = current_token
       raise Error, "Expected #{type}, got #{token.type}" if token.type != type
