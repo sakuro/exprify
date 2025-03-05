@@ -60,17 +60,14 @@ parser = Exprify::Parser.new
 ast = parser.parse("ruby gem -deprecated")
 #=> AndNode
 #     children: [
-#       GroupNode
-#         expression: OrNode
-#           children: [
-#             KeywordNode
-#               value: "ruby",
-#             KeywordNode
-#               value: "gem"
-#           ],
-#       NamedArgumentNode
-#         name: "tag"
-#         value: "web framework"
+#       KeywordNode
+#         value: "ruby",
+#       KeywordNode
+#         value: "gem",
+#       NotNode
+#         expression: KeywordNode
+#           value: "deprecated"
+#     ]
 
 # Parse with grouping and operators
 ast = parser.parse('(ruby OR gem) tag:"web framework"')
