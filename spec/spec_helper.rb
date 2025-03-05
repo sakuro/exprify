@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+require "simplecov"
+SimpleCov.start do
+  enable_coverage :branch
+  add_filter "/spec/"
+  add_filter "/vendor/"
+
+  add_group "AST", "lib/exprify/ast"
+  add_group "Transformers", "lib/exprify/transformers"
+  add_group "Core", "lib/exprify"
+end
+
 require "exprify"
 
 RSpec.configure do |config|
