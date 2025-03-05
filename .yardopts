@@ -1,0 +1,13 @@
+--output-dir doc
+--readme README.md
+--markup markdown
+--markup-provider kramdown
+--title 'Exprify Documentation'
+--protected
+--no-private
+--asset docs
+'lib/**/*.rb'
+-
+README.md
+TODO.md
+docs/grammar.ebnf

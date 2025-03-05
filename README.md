@@ -4,7 +4,7 @@
 
 Exprify is a library for parsing search expressions into abstract syntax trees (AST). The AST can be transformed into various formats by implementing a transformer class.
 
-See [TODO.md](TODO.md) for planned features and improvements.
+See {file:TODO.md TODO} for planned features and improvements.
 
 ## Features
 
@@ -110,7 +110,7 @@ See the included transformer for an implementation example:
 
 ### Grammar
 
-The complete grammar specification is available in Extended Backus-Naur Form (EBNF) at [docs/grammar.ebnf](docs/grammar.ebnf). This formal grammar definition precisely describes the syntax of search expressions supported by Exprify.
+The complete grammar specification is available in Extended Backus-Naur Form (EBNF) at {file:docs/grammar.ebnf Grammar}. This formal grammar definition precisely describes the syntax of search expressions supported by Exprify.
 
 ### AST structure
 
