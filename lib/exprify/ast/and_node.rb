@@ -38,20 +38,8 @@ module Exprify
       # @param pp [PP] The pretty printer
       # @return [void]
       def pretty_print(pp)
-        pp.text("AndNode")
-        pp.nest(2) do
-          pp.breakable
-          pp.text("children: [")
-          pp.nest(2) do
-            children.each_with_index do |child, index|
-              pp.breakable
-              child.pretty_print(pp)
-              pp.text(",") if index < children.size - 1
-            end
-          end
-          pp.breakable
-          pp.text("]")
-        end
+        super
+        pretty_print_children(pp, "children", children)
       end
     end
   end

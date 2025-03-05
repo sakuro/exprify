@@ -54,10 +54,16 @@ Metrics/CyclomaticComplexity:
 
 # AST and Parser methods need to handle complex logic that cannot be
 # meaningfully split into smaller methods without sacrificing clarity.
+#
+# The pretty_print_children method in Node class requires a specific structure
+# to properly handle indentation, line breaks, and comma placement for
+# pretty printing AST nodes. Breaking it into smaller methods would make
+# the printing logic harder to follow and maintain.
 Metrics/MethodLength:
   Exclude:
     - 'lib/exprify/ast.rb'
     - 'lib/exprify/parser.rb'
+    - 'lib/exprify/ast/node.rb'
 
 # Parser methods require multiple condition checks and branching paths
 # to properly handle the parsing logic.

@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
+require_relative "../../../lib/exprify/transformers/base"
+
 RSpec.describe Exprify::AST::NotNode do
-  let(:expression) { Exprify::AST::KeywordNode.new("test") }
-  let(:node) { described_class.new(expression) }
+  let(:keyword) { Exprify::AST::KeywordNode.new("test") }
+  let(:node) { described_class.new(keyword) }
 
   describe "#accept" do
     it "calls visit_not on visitor" do
-      visitor = double("visitor")
-      expect(visitor).to receive(:visit_not).with(node)
+      visitor = instance_double(Exprify::Transformers::Base)
+      allow(visitor).to receive(:visit_not).with(node)
       node.accept(visitor)
+      expect(visitor).to have_received(:visit_not).with(node)
     end
   end
 
@@ -19,13 +22,21 @@ RSpec.describe Exprify::AST::NotNode do
   end
 
   describe "#pretty_print" do
-    it "formats node with expression" do
-      output = StringIO.new
+    let(:output) { StringIO.new }
+    let(:pp_output) do
       PP.pp(node, output)
-      pp_output = output.string
+      output.string
+    end
 
+    it "includes node type" do
       expect(pp_output).to include("NotNode")
+    end
+
+    it "includes expression section" do
       expect(pp_output).to include("expression")
+    end
+
+    it "includes expression value" do
       expect(pp_output).to include("test")
     end
   end

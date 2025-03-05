@@ -1,34 +1,51 @@
 # frozen_string_literal: true
 
+require_relative "../../../lib/exprify/transformers/base"
+
 RSpec.describe Exprify::AST::AndNode do
-  let(:child1) { Exprify::AST::KeywordNode.new("test1") }
-  let(:child2) { Exprify::AST::KeywordNode.new("test2") }
-  let(:node) { described_class.new(child1, child2) }
+  let(:first_keyword) { Exprify::AST::KeywordNode.new("test1") }
+  let(:second_keyword) { Exprify::AST::KeywordNode.new("test2") }
+  let(:node) { described_class.new(first_keyword, second_keyword) }
 
   describe "#accept" do
     it "calls visit_and on visitor" do
-      visitor = double("visitor")
-      expect(visitor).to receive(:visit_and).with(node)
+      visitor = instance_double(Exprify::Transformers::Base)
+      allow(visitor).to receive(:visit_and).with(node)
       node.accept(visitor)
+      expect(visitor).to have_received(:visit_and).with(node)
     end
   end
 
   describe "#inspect" do
-    it "includes children" do
+    it "includes first keyword" do
       expect(node.inspect).to include("test1")
+    end
+
+    it "includes second keyword" do
       expect(node.inspect).to include("test2")
     end
   end
 
   describe "#pretty_print" do
-    it "formats node with children" do
-      output = StringIO.new
+    let(:output) { StringIO.new }
+    let(:pp_output) do
       PP.pp(node, output)
-      pp_output = output.string
+      output.string
+    end
 
+    it "includes node type" do
       expect(pp_output).to include("AndNode")
+    end
+
+    it "includes children section" do
       expect(pp_output).to include("children")
+    end
+
+    it "includes first keyword" do
       expect(pp_output).to include("test1")
+    end
+
+    it "includes second keyword" do
       expect(pp_output).to include("test2")
     end
   end
