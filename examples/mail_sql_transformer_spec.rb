@@ -19,27 +19,27 @@ RSpec.describe MailSqlTransformer do
   end
 
   it "transforms a single keyword" do
-    expect(transform("ruby")).to eq ["(subject LIKE ? OR body LIKE ?)", ["ruby%", "%ruby%"]]
+    expect(transform("ruby")).to eq ["(subject LIKE ? OR body LIKE ?)", ["%ruby%", "%ruby%"]]
   end
 
   it "transforms AND expression" do
     expect(transform("ruby gem")).to eq [
       "(subject LIKE ? OR body LIKE ?) AND (subject LIKE ? OR body LIKE ?)",
-      ["ruby%", "%ruby%", "gem%", "%gem%"]
+      ["%ruby%", "%ruby%", "%gem%", "%gem%"]
     ]
   end
 
   it "transforms OR expression" do
     expect(transform("ruby OR gem")).to eq [
       "(subject LIKE ? OR body LIKE ?) OR (subject LIKE ? OR body LIKE ?)",
-      ["ruby%", "%ruby%", "gem%", "%gem%"]
+      ["%ruby%", "%ruby%", "%gem%", "%gem%"]
     ]
   end
 
   it "transforms NOT expression" do
     expect(transform("-ruby")).to eq [
       "NOT ((subject LIKE ? OR body LIKE ?))",
-      ["ruby%", "%ruby%"]
+      ["%ruby%", "%ruby%"]
     ]
   end
 
@@ -90,11 +90,11 @@ RSpec.describe MailSqlTransformer do
       "(subject = ? OR body = ?) AND " \
       "date >= ?",
       [
-        "ruby%",
         "%ruby%",
-        "gem%",
+        "%ruby%",
         "%gem%",
-        "deprecated%",
+        "%gem%",
+        "%deprecated%",
         "%deprecated%",
         "exact phrase",
         "exact phrase",

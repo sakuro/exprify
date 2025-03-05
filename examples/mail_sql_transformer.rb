@@ -19,7 +19,8 @@ class MailSqlTransformer < Exprify::Transformers::Base
   # @param node [Exprify::AST::KeywordNode] The keyword node to transform.
   # @return [Array<String, Array<String>>] SQL condition and parameters.
   def transform_keyword(node)
-    ["(subject LIKE ? OR body LIKE ?)", ["%#{node.value}%", "%#{node.value}%"]]
+    value = "%#{node.value}%"
+    ["(subject LIKE ? OR body LIKE ?)", [value, value]]
   end
 
   # Transform an AND node and combine its children with SQL AND.
