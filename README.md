@@ -108,6 +108,10 @@ See the included transformer for an implementation example:
 
 ## Design
 
+### Grammar
+
+The complete grammar specification is available in Extended Backus-Naur Form (EBNF) at [docs/grammar.ebnf](docs/grammar.ebnf). This formal grammar definition precisely describes the syntax of search expressions supported by Exprify.
+
 ### AST structure
 
 The parser generates an AST with the following node types:
