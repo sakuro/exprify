@@ -1,7 +1,7 @@
 --output-dir doc
 --readme README.md
 --markup markdown
---markup-provider kramdown
+--markup-provider redcarpet
 --title 'Exprify Documentation'
 --protected
 --no-private
