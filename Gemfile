@@ -8,6 +8,7 @@ gemspec
 group :development, :test do
   gem "rake"
   gem "rspec"
+
   gem "rubocop"
   gem "rubocop-rake"
   gem "rubocop-rspec"
@@ -15,6 +16,7 @@ group :development, :test do
 
   gem "redcarpet"
   gem "yard"
-end
 
-gem "irb"
+  gem "irb"
+  gem "repl_type_completor"
+end
